@@ -32,12 +32,18 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .item-card span { font-size: 17px; font-weight: bold; }
-        input[type="number"] { width: 70px; height: 40px; font-size: 20px; text-align: center; border: 1px solid #ccc; border-radius: 5px; }
+        
+        /* 下拉選單樣式優化 */
+        select.qty-in { 
+            width: 80px; height: 45px; font-size: 18px; text-align: center; 
+            border: 2px solid #ccc; border-radius: 5px; background-color: white;
+            cursor: pointer;
+        }
 
         .add-btn { 
             width: 100%; padding: 15px; background: var(--travel-blue); color: white; 
             border: none; border-radius: 8px; font-size: 22px; cursor: pointer; font-weight: bold; 
-            box-shadow: 0 4px 0 #1a3a7a; transition: 0.1s;
+            box-shadow: 0 4px 0 #1a3a7a; transition: 0.1s; margin-top: 10px;
         }
         .add-btn:active { transform: translateY(4px); box-shadow: none; }
 
@@ -76,12 +82,36 @@
         
         <label style="font-weight: bold; font-size: 18px; color: #555;">📦 第二步：選擇數量</label>
         <div class="menu-grid">
-            <div class="item-card"><span>包餡魚丸 (170元)</span><input type="number" class="qty-in" data-name="包餡魚丸" data-price="170" value="0" min="0"></div>
-            <div class="item-card"><span>無包餡魚丸 (150元)</span><input type="number" class="qty-in" data-name="無包餡魚丸" data-price="150" value="0" min="0"></div>
-            <div class="item-card"><span>原味貢丸 (190元)</span><input type="number" class="qty-in" data-name="原味貢丸" data-price="190" value="0" min="0"></div>
-            <div class="item-card"><span>香菇貢丸 (190元)</span><input type="number" class="qty-in" data-name="香菇貢丸" data-price="190" value="0" min="0"></div>
-            <div class="item-card"><span>福州燕丸 (220元)</span><input type="number" class="qty-in" data-name="福州燕丸" data-price="220" value="0" min="0"></div>
-            <div class="item-card"><span>鮮蔥貢丸 (220元)</span><input type="number" class="qty-in" data-name="鮮蔥貢丸" data-price="220" value="0" min="0"></div>
+            <div class="item-card"><span>包餡魚丸 (170元)</span>
+                <select class="qty-in" data-name="包餡魚丸" data-price="170">
+                    <script>for(let i=0;i<=10;i++) document.write(`<option value="${i}">${i}</option>`)</script>
+                </select>
+            </div>
+            <div class="item-card"><span>無包餡魚丸 (150元)</span>
+                <select class="qty-in" data-name="無包餡魚丸" data-price="150">
+                    <script>for(let i=0;i<=10;i++) document.write(`<option value="${i}">${i}</option>`)</script>
+                </select>
+            </div>
+            <div class="item-card"><span>原味貢丸 (190元)</span>
+                <select class="qty-in" data-name="原味貢丸" data-price="190">
+                    <script>for(let i=0;i<=10;i++) document.write(`<option value="${i}">${i}</option>`)</script>
+                </select>
+            </div>
+            <div class="item-card"><span>香菇貢丸 (190元)</span>
+                <select class="qty-in" data-name="香菇貢丸" data-price="190">
+                    <script>for(let i=0;i<=10;i++) document.write(`<option value="${i}">${i}</option>`)</script>
+                </select>
+            </div>
+            <div class="item-card"><span>福州燕丸 (220元)</span>
+                <select class="qty-in" data-name="福州燕丸" data-price="220">
+                    <script>for(let i=0;i<=10;i++) document.write(`<option value="${i}">${i}</option>`)</script>
+                </select>
+            </div>
+            <div class="item-card"><span>鮮蔥貢丸 (220元)</span>
+                <select class="qty-in" data-name="鮮蔥貢丸" data-price="220">
+                    <script>for(let i=0;i<=10;i++) document.write(`<option value="${i}">${i}</option>`)</script>
+                </select>
+            </div>
         </div>
         <button class="add-btn" onclick="addToStat()">＋ 加入旅行統計清單</button>
     </div>
@@ -127,27 +157,28 @@
         if (!name) { alert("請先輸入姓名！"); return; }
         
         let currentOrder = { name: name, items: {}, personalTotal: 0 };
-        const inputs = document.querySelectorAll('.qty-in');
+        const selects = document.querySelectorAll('.qty-in');
         let hasValue = false;
 
-        inputs.forEach(input => {
-            const qty = parseInt(input.value);
+        selects.forEach(select => {
+            const qty = parseInt(select.value);
             if (qty > 0) {
-                const pName = input.getAttribute('data-name');
-                const price = parseInt(input.getAttribute('data-price'));
+                const pName = select.getAttribute('data-name');
+                const price = parseInt(select.getAttribute('data-price'));
                 currentOrder.items[pName] = qty;
                 currentOrder.personalTotal += (qty * price);
                 hasValue = true;
             }
         });
 
-        if (!hasValue) { alert("請填寫數量！"); return; }
+        if (!hasValue) { alert("請選擇數量！"); return; }
 
         allOrders.push(currentOrder);
         updateDisplay();
         
+        // 重設輸入
         nameInput.value = '';
-        inputs.forEach(i => i.value = 0);
+        selects.forEach(s => s.value = 0);
         nameInput.focus();
     }
 
