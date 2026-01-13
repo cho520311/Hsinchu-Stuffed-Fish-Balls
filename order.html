@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>新竹之旅團購網</title>
+    <style>
+        :root { 
+            --travel-blue: #2e59a7; 
+            --classic-red: #a93226; 
+            --warm-bg: #fdfaf5;
+        }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #e9ecef; padding: 15px; margin: 0; }
+        .container { max-width: 950px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); margin: auto; border-top: 10px solid var(--travel-blue); }
+        
+        .header-section { text-align: center; margin-bottom: 30px; }
+        h1 { color: var(--travel-blue); margin: 0; font-size: 32px; letter-spacing: 2px; }
+        .trip-slogan { color: #555; font-style: italic; margin-top: 5px; font-weight: bold; }
+
+        .order-box { background: var(--warm-bg); border: 2px solid #ddd; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
+        .name-input-group { margin-bottom: 20px; }
+        .name-input-group label { display: block; font-weight: bold; font-size: 18px; margin-bottom: 10px; color: var(--travel-blue); }
+        #userName { 
+            width: 100%; padding: 15px; font-size: 20px; border: 2px solid var(--travel-blue); 
+            border-radius: 8px; box-sizing: border-box; background: white;
+        }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin: 20px 0; }
+        .item-card { 
+            background: white; border: 1px solid #eee; padding: 15px; border-radius: 8px; 
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .item-card span { font-size: 17px; font-weight: bold; }
+        input[type="number"] { width: 70px; height: 40px; font-size: 20px; text-align: center; border: 1px solid #ccc; border-radius: 5px; }
+
+        .add-btn { 
+            width: 100%; padding: 15px; background: var(--travel-blue); color: white; 
+            border: none; border-radius: 8px; font-size: 22px; cursor: pointer; font-weight: bold; 
+            box-shadow: 0 4px 0 #1a3a7a; transition: 0.1s;
+        }
+        .add-btn:active { transform: translateY(4px); box-shadow: none; }
+
+        .table-section h3 { color: var(--classic-red); border-left: 5px solid var(--classic-red); padding-left: 10px; }
+        .table-container { overflow-x: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #dee2e6; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 700px; }
+        th, td { border: 1px solid #dee2e6; padding: 15px; text-align: center; }
+        th { background-color: #f8f9fa; color: #333; font-weight: bold; }
+        .row-even { background-color: #fafafa; }
+        .del-btn { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+
+        .summary-box { background: #f0f7ff; border: 2px solid var(--travel-blue); padding: 25px; margin-top: 40px; border-radius: 12px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 15px; }
+        .summary-card { background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #bed6f7; }
+        .summary-card strong { display: block; margin-bottom: 8px; color: var(--travel-blue); font-size: 16px; }
+        .grand-total-text { font-size: 28px; color: var(--classic-red); font-weight: bold; text-align: right; margin-top: 25px; }
+
+        .footer-quote { text-align: center; margin-top: 40px; font-size: 22px; color: var(--classic-red); font-weight: bold; }
+
+        @media print { .order-box, .del-btn, .print-hide { display: none; } body { background: white; } .container { box-shadow: none; border: none; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h1>🚍 新竹之旅團購網 🚍</h1>
+        <p class="trip-slogan">風城石家真本味，師生雅集共嘗鮮</p>
+    </div>
+    
+    <div class="order-box">
+        <div class="name-input-group">
+            <label for="userName">👤 第一步：請輸入中文全名</label>
+            <input type="text" id="userName" placeholder="請輸入姓名" autocomplete="off">
+        </div>
+        
+        <label style="font-weight: bold; font-size: 18px; color: #555;">📦 第二步：選擇數量</label>
+        <div class="menu-grid">
+            <div class="item-card"><span>包餡魚丸 (170元)</span><input type="number" class="qty-in" data-name="包餡魚丸" data-price="170" value="0" min="0"></div>
+            <div class="item-card"><span>無包餡魚丸 (150元)</span><input type="number" class="qty-in" data-name="無包餡魚丸" data-price="150" value="0" min="0"></div>
+            <div class="item-card"><span>原味貢丸 (190元)</span><input type="number" class="qty-in" data-name="原味貢丸" data-price="190" value="0" min="0"></div>
+            <div class="item-card"><span>香菇貢丸 (190元)</span><input type="number" class="qty-in" data-name="香菇貢丸" data-price="190" value="0" min="0"></div>
+            <div class="item-card"><span>福州燕丸 (220元)</span><input type="number" class="qty-in" data-name="福州燕丸" data-price="220" value="0" min="0"></div>
+            <div class="item-card"><span>鮮蔥貢丸 (220元)</span><input type="number" class="qty-in" data-name="鮮蔥貢丸" data-price="220" value="0" min="0"></div>
+        </div>
+        <button class="add-btn" onclick="addToStat()">＋ 加入旅行統計清單</button>
+    </div>
+
+    <div class="table-section">
+        <h3>📋 訂購明細</h3>
+        <div class="table-container">
+            <table id="detailTable">
+                <thead>
+                    <tr>
+                        <th width="10%">序號</th>
+                        <th width="20%">姓名</th>
+                        <th width="45%">訂購內容</th>
+                        <th width="15%">金額</th>
+                        <th width="10%" class="print-hide">操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="summary-box">
+        <h3>🚚 團體下單總計 (給店家)</h3>
+        <div class="summary-grid" id="summaryGrid"></div>
+        <div class="grand-total-text">團購總金額：NT$ <span id="grandTotal">0</span></div>
+    </div>
+
+    <div class="footer-quote">寒盡春生遊古蹟，師徒情誼永留心。</div>
+
+    <div style="text-align: center; margin-top: 30px;" class="print-hide">
+        <button onclick="window.print()" style="padding: 15px 30px; font-size: 18px; cursor: pointer; background: #555; color: white; border: none; border-radius: 8px;">列印 / 存成統計 PDF</button>
+    </div>
+</div>
+
+<script>
+    let allOrders = []; 
+    const itemNames = ["包餡魚丸", "無包餡魚丸", "原味貢丸", "香菇貢丸", "福州燕丸", "鮮蔥貢丸"];
+
+    function addToStat() {
+        const nameInput = document.getElementById('userName');
+        const name = nameInput.value.trim();
+        if (!name) { alert("請先輸入姓名！"); return; }
+        
+        let currentOrder = { name: name, items: {}, personalTotal: 0 };
+        const inputs = document.querySelectorAll('.qty-in');
+        let hasValue = false;
+
+        inputs.forEach(input => {
+            const qty = parseInt(input.value);
+            if (qty > 0) {
+                const pName = input.getAttribute('data-name');
+                const price = parseInt(input.getAttribute('data-price'));
+                currentOrder.items[pName] = qty;
+                currentOrder.personalTotal += (qty * price);
+                hasValue = true;
+            }
+        });
+
+        if (!hasValue) { alert("請填寫數量！"); return; }
+
+        allOrders.push(currentOrder);
+        updateDisplay();
+        
+        nameInput.value = '';
+        inputs.forEach(i => i.value = 0);
+        nameInput.focus();
+    }
+
+    function removeOrder(index) {
+        if(confirm("確定刪除此筆訂單？")) {
+            allOrders.splice(index, 1);
+            updateDisplay();
+        }
+    }
+
+    function updateDisplay() {
+        const tbody = document.querySelector('#detailTable tbody');
+        tbody.innerHTML = '';
+        allOrders.forEach((order, index) => {
+            let itemStr = Object.entries(order.items).map(([k, v]) => `${k}x${v}`).join(', ');
+            const rowClass = (index % 2 === 0) ? '' : 'row-even';
+            tbody.innerHTML += `<tr class="${rowClass}">
+                <td>${index + 1}</td>
+                <td><strong>${order.name}</strong></td>
+                <td style="text-align:left">${itemStr}</td>
+                <td style="color:var(--classic-red); font-weight:bold">${order.personalTotal}</td>
+                <td class="print-hide"><button class="del-btn" onclick="removeOrder(${index})">刪除</button></td>
+            </tr>`;
+        });
+
+        const summaryGrid = document.getElementById('summaryGrid');
+        let grandTotal = 0;
+        let totalQty = {};
+        itemNames.forEach(name => totalQty[name] = 0);
+
+        allOrders.forEach(order => {
+            grandTotal += order.personalTotal;
+            Object.entries(order.items).forEach(([name, qty]) => {
+                totalQty[name] += qty;
+            });
+        });
+
+        summaryGrid.innerHTML = '';
+        itemNames.forEach(name => {
+            if (totalQty[name] > 0) {
+                summaryGrid.innerHTML += `
+                    <div class="summary-card">
+                        <strong>${name}</strong>
+                        <span style="font-size:26px; color:var(--travel-blue); font-weight:bold">${totalQty[name]}</span> 份
+                    </div>`;
+            }
+        });
+
+        document.getElementById('grandTotal').innerText = grandTotal.toLocaleString();
+    }
+</script>
+
+</body>
+</html>
